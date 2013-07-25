@@ -1,0 +1,20 @@
+application: formula1predictions
+version: 3
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /css
+  static_dir: css
+  mime_type: text/css
+  
+- url: /js
+  static_dir: js
+
+- url: /.*
+  script: UI.application
+
+libraries:
+- name: webapp2
+  version: latest

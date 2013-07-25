@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+	<body>
+		<span>Your Prediction for Race {{ racenum }} was recorded as shown below(in order).</span>
+			<div>Qualifying</div>
+			<ol>
+			{% for q in quali %}
+			<li>{{ q }}</li>
+			{% endfor %}
+			</ol>
+			<br>
+			
+			<div>Race</div>
+			<ol>
+			{% for r in race %}
+			<li>{{ r }}</li>
+			{% endfor %}
+			</ol>
+		<a href="/">Back to Main Page</a>
+	</body>
+</html>

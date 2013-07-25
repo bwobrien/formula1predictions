@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/main.css" />
+    <script src="../js/jquery-1.10.1.js"></script>
+    <script src="../js/main.js"></script>
+  </head>
+  <body>
+    <h1>Welcome to Formula1 Predictions, {{ user_name }}!</h1>
+    <div>Enter your predictions for Race {{racenum}}</div>
+    <a href="{{ logout_url }}">Sign Out</a>
+    <br>
+    <div>Your total Points: {{points_total}}</div>
+    <div>Points from last race: {{points_last_race}}</div>
+    <div>Choose an opponent to view his/her points:</div>
+    <select id="idOpponents" onchange="f()">
+ 		{% for opponent in opponents %}
+ 			<option value="{{ opponent.total }}">{{ opponent.name }}</option>
+ 		{% endfor %}
+    </select>
+    {% for opponent in opponents %}
+    	<div id="{{ opponent.name }}" class="hidden">{{ opponent.last }}</div>
+    {% endfor%}
+    <div id="idOpponentTotal"></div>
+    <div id="idOpponentLast"></div>
+    <br>
+    <form method="get" action="/predictions">
+    	<div>Qualifying P1
+		    <select name="q1">
+		        {% for driver in drivers %}
+		      		<option value="{{ driver.code }}">{{ driver.last }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <div>Qualifying P2
+		    <select name="q2">
+		        {% for driver in drivers %}
+		      		<option value="{{ driver.code }}">{{ driver.last }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <div>Qualifying P3
+		    <select name="q3">
+		        {% for driver in drivers %}
+		      		<option value="{{ driver.code }}">{{ driver.last }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+    
+    	<br><br>
+
+   		<div>Race P1
+		    <select name="r1">
+		        {% for driver in drivers %}
+		      		<option value="{{ driver.code }}">{{ driver.last }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <div>Race P2
+		    <select name="r2">
+		        {% for driver in drivers %}
+		      		<option value="{{ driver.code }}">{{ driver.last }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <div>Race P3
+		    <select name="r3">
+		        {% for driver in drivers %}
+		      		<option value="{{ driver.code }}">{{ driver.last }}</option>
+				{% endfor %}
+		    </select>
+	    </div>
+	    <input type="submit" value="Record Result"/>
+	</form>
+	<script>f();</script>
+  </body>
+</html>
