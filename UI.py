@@ -41,7 +41,7 @@ class MainPage(webapp2.RequestHandler):
             'opponents': opponents
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/overall.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/overall_makepredictions.html')
         self.response.out.write(template.render(path, template_values))
       else:
         self.redirect('/register/view')
