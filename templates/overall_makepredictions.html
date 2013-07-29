@@ -29,10 +29,10 @@
     <form method="get" action="/predictions">
       <table>
         <tr>
-          <th></th><th>P1</th><th>P2</th><th>P3</th>
+          <th></th><th>Qualifying</th><th>Race</th>
         </tr>
         <tr>
-          <th>Qualifying</th>
+          <th>P1</th>
           <td>
             <select name="q1">
               {% for driver in drivers %}
@@ -41,14 +41,7 @@
             </select>
           </td>
           <td>
-            <select name="q2">
-              {% for driver in drivers %}
-              <option value="{{ driver.code }}">{{ driver.last }}</option>
-              {% endfor %}
-            </select>
-          </td>
-          <td>
-            <select name="q3">
+            <select name="r1">
               {% for driver in drivers %}
               <option value="{{ driver.code }}">{{ driver.last }}</option>
               {% endfor %}
@@ -56,9 +49,9 @@
           </td>
         </tr>
         <tr>
-          <th>Race</th>
+          <th>P2</th>
           <td>
-            <select name="r1">
+            <select name="q2">
               {% for driver in drivers %}
               <option value="{{ driver.code }}">{{ driver.last }}</option>
               {% endfor %}
@@ -66,6 +59,16 @@
           </td>
           <td>
             <select name="r2">
+              {% for driver in drivers %}
+              <option value="{{ driver.code }}">{{ driver.last }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>P3</th>
+          <td>
+            <select name="q3">
               {% for driver in drivers %}
               <option value="{{ driver.code }}">{{ driver.last }}</option>
               {% endfor %}
