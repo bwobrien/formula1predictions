@@ -60,7 +60,7 @@ a, span {
 #nav_tabs li {
   float: left;
   border: 2px solid black;
-  border-radius: 5px 5px 0 0;
+  border-radius: 8px 8px 0 0;
   margin-right: -2px;
   padding: 2px 5px;
 }
