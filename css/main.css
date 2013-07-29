@@ -44,11 +44,39 @@ a, span {
 
 /* End Header CSS */
 
+/* Nav CSS */
+.nav {
+  background-color: gray;
+  color: black;
+}
+
+#nav_tabs {
+  margin: 0;
+  padding: 5px 0 0 5px;
+  list-style-type: none;
+  height: 1.7em;
+}
+
+#nav_tabs li {
+  float: left;
+  border: 2px solid black;
+  border-radius: 5px 5px 0 0;
+  margin-right: -2px;
+  padding: 2px 5px;
+}
+
+#nav_tabs li.selected {
+  border-bottom: 2px solid gray;
+}
+
+/* End Nav CSS */
+
 /* Content CSS */
 .content {
   color: black;
   background-color: gray;
   padding: 0.5em;
+  border-top: 2px solid black;
 }
 
 .content-header {
