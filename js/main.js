@@ -9,8 +9,10 @@ function f() {
 	var strUser = e.options[e.selectedIndex].value;
 	var opTotal = document.getElementById("idOpponentTotal");
 	var opLast = document.getElementById("idOpponentLast");
-	var opLastPoints = document.getElementById(e.options[e.selectedIndex].text).innerHTML;
-	
+        var oppScoreData = JSON.parse(window.sessionStorage.getItem('oppScoreData'));
+	//var opLastPoints = document.getElementById(e.options[e.selectedIndex].text).innerHTML;
+        var opLastPoints = oppScoreData[e.options[e.selectedIndex].text];
+
 	opTotal.innerHTML = 'Opponent Total Points: '+ strUser;
 	opLast.innerHTML = 'Opponent Last Race Points: ' + opLastPoints;
 }

@@ -15,9 +15,13 @@
       {% endfor %}
     </select>
     </p>
-    {% for opponent in opponents %}
-    <div id="{{ opponent.name }}" class="hidden">{{ opponent.last }}</div>
-    {% endfor %}
+    <script>
+      var oppScoreData = {};
+      {% for opponent in opponents %}
+      oppScoreData['{{ opponent.name }}'] = {{ opponent.last }};
+      {% endfor %}
+      sessionStorage.setItem('oppScoreData', JSON.stringify(oppScoreData));
+    </script>
     <p id="idOpponentTotal"></p>
     <p id="idOpponentLast"></p>
   </div>
