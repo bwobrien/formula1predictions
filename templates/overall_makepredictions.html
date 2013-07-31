@@ -1,29 +1,10 @@
 {% extends "overall.html" %}
 
 {% block content %}
-<div class="content">
   <div class="content-header">Enter your predictions for Race {{racenum}}</div>
   <div class="content-item">
     <p>Your total Points: {{points_total}}</p>
     <p>Points from last race: {{points_last_race}}</p>
-  </div>
-  <div class="content-item">
-    <p>Choose an opponent to view his/her points:
-    <select id="idOpponents" onchange="f()">
-      {% for opponent in opponents %}
-      <option value="{{ opponent.total }}">{{ opponent.name }}</option>
-      {% endfor %}
-    </select>
-    </p>
-    <script>
-      var oppScoreData = {};
-      {% for opponent in opponents %}
-      oppScoreData['{{ opponent.name }}'] = {{ opponent.last }};
-      {% endfor %}
-      sessionStorage.setItem('oppScoreData', JSON.stringify(oppScoreData));
-    </script>
-    <p id="idOpponentTotal"></p>
-    <p id="idOpponentLast"></p>
   </div>
   <div class="content-item">
     <form method="get" action="/predictions">
@@ -86,7 +67,5 @@
       <p><input type="submit" value="Record Result"/></p>
     </form>
   </div>
-</div>
-<script>f();</script>
 
 {% endblock content %}

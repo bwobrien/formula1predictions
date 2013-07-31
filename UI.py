@@ -9,83 +9,110 @@ from py import DB, F1API
 import os
 
 
+
+def getPoints(predictionsDb, api, uuid):
+  racenum = predictionsDb.getNextRaceByUuid(uuid)
+  pointsTotal = 0
+  pointsLast = 0
+  if racenum == None:
+    return 0, 0
+  for i in range(1, racenum):
+    raceResult = api.getResult(i, True)
+    qualiResult = api.getResult(i, False)
+    qualiResultCode = api.getDriverCodeFromId(qualiResult)
+    myRaceResult = predictionsDb.getPredictions(uuid, i, True)
+    myQualiResult = predictionsDb.getPredictions(uuid, i, False)
+    pointsLast = float(calculatePoints(myRaceResult, raceResult, True))
+    pointsLast += float(calculatePoints(myQualiResult, qualiResultCode, False))
+    pointsTotal += float(pointsLast)
+  return pointsLast, pointsTotal
+
+
+def calculatePoints(myList, resultList, isRace):
+  if resultList == []:
+    return 0
+  top3 = resultList[:3]
+  #quali point (to be double if it's race)
+  points = [12.5, 9, 7.5]
+  wrongOrderPoints = 1
+  if isRace:
+    points = [i * 2 for i in points]
+    wrongOrderPoints = 2
+
+  myTotal = 0.0
+  for i in range(len(myList)):
+    if myList[i] == top3[i]:
+      myTotal += points[i]
+    elif myList[i] in top3:
+      myTotal += wrongOrderPoints
+  return myTotal
+
+
+def redirectUser(handler):
+  userDb = DB.Users()
+  user = users.get_current_user()
+  if user is None:
+    # Not signed in
+    handler.redirect(users.create_login_url('/'))
+    return
+
+  userRow = userDb.getUserById(user.user_id())
+  if userRow is None:
+    # Signed-in, not registered
+    handler.redirect('/register/view')
+    return
+
+  return user
+
 class MainPage(webapp2.RequestHandler):
   def get(self):
-    user = users.get_current_user()
+    user = redirectUser(self)
+    if user is None:
+      return
     api = F1API.API()
-    if user:
-      userDb = DB.Users()
-      uuid = user.user_id()
-      userRow = userDb.getUserById(uuid)
-      predictionsDb = DB.Predictions()
-      racenum = predictionsDb.getNextRaceByUuid(uuid)
-      if racenum is None:
-        racenum = 1
-      pointsLast = 0
-      pointsTotal = 0
-      if racenum > 1:
-        pointsLast, pointsTotal = self.getPoints(predictionsDb, api, uuid)
-      #25,18,15 and half points for quali, 2 pt for 
-      if userRow:
-        #registered
-        opponents = userDb.getOpponents(uuid)
-        for each in opponents:
-          each['last'], each['total'] = self.getPoints(predictionsDb, api, each['uuid'])
-        template_values = {
-            'racenum': racenum,
-            'drivers': api.getDriverList(),
-            'logout_url': users.create_logout_url('/'),
-            'user_name': userRow.display,
-            'points_total': pointsTotal,
-            'points_last_race': pointsLast,
-            'opponents': opponents
-        }
-
-        path = os.path.join(os.path.dirname(__file__), 'templates/overall_makepredictions.html')
-        self.response.out.write(template.render(path, template_values))
-      else:
-        self.redirect('/register/view')
-
-    else:
-      self.redirect(users.create_login_url('/'))
-
-  def getPoints(self, predictionsDb, api, uuid):
+    userDb = DB.Users()
+    uuid = user.user_id()
+    userRow = userDb.getUserById(uuid)
+    predictionsDb = DB.Predictions()
     racenum = predictionsDb.getNextRaceByUuid(uuid)
-    pointsTotal = 0
+    if racenum is None:
+      racenum = 1
     pointsLast = 0
-    if racenum == None:
-      return 0, 0
-    for i in range(1, racenum):
-      raceResult = api.getResult(i, True)
-      qualiResult = api.getResult(i, False)
-      qualiResultCode = api.getDriverCodeFromId(qualiResult)
-      myRaceResult = predictionsDb.getPredictions(uuid, i, True)
-      myQualiResult = predictionsDb.getPredictions(uuid, i, False)
-      pointsLast = float(self.calculatePoints(myRaceResult, raceResult, True))
-      pointsLast += float(self.calculatePoints(myQualiResult, qualiResultCode, False))
-      pointsTotal += float(pointsLast)
-    return pointsLast, pointsTotal
+    pointsTotal = 0
+    if racenum > 1:
+      pointsLast, pointsTotal = getPoints(predictionsDb, api, uuid)
+    template_values = {
+        'racenum': racenum,
+        'drivers': api.getDriverList(),
+        'logout_url': users.create_logout_url('/'),
+        'user_name': userRow.display,
+        'points_total': pointsTotal,
+        'points_last_race': pointsLast
+    }
 
-  def calculatePoints(self, myList, resultList, isRace):
-    if resultList == []:
-      return 0
-    top3 = resultList[:3]
-    #quali point (to be double if it's race)
-    points = [12.5, 9, 7.5]
-    wrongOrderPoints = 1
-    if isRace:
-      points = [i * 2 for i in points]
-      wrongOrderPoints = 2
-
-    myTotal = 0.0
-    for i in range(len(myList)):
-      if myList[i] == top3[i]:
-        myTotal += points[i]
-      elif myList[i] in top3:
-        myTotal += wrongOrderPoints
-    return myTotal
+    path = os.path.join(os.path.dirname(__file__), 'templates/overall_makepredictions.html')
+    self.response.out.write(template.render(path, template_values))
 
 
+class Points(webapp2.RequestHandler):
+  def get(self):
+    user = redirectUser(self)
+    if user is None:
+      return
+    userDb = DB.Users()
+    predictionsDb = DB.Predictions()
+    api = F1API.API()
+
+    uuid = user.user_id()
+    opponents = userDb.getOpponents(uuid)
+    for each in opponents:
+      each['last'], each['total'] = getPoints(predictionsDb, api, each['uuid'])
+
+    template_values = {
+      'opponents': opponents
+    }
+    path = os.path.join(os.path.dirname(__file__), 'templates/overall_points.html')
+    self.response.out.write(template.render(path, template_values))
 
 
 class PredictionsHandler(webapp2.RequestHandler):
@@ -141,5 +168,6 @@ application = webapp2.WSGIApplication([
                                        ('/', MainPage),
                                        ('/register/view', RegisterView),
                                        ('/register/submit', RegisterSubmit),
-                                       ('/predictions', PredictionsHandler)
+                                       ('/predictions', PredictionsHandler),
+                                       ('/points', Points)
                                        ], debug=True)

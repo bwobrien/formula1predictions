@@ -1,0 +1,32 @@
+{% extends "overall.html" %}
+
+{% block nav %}
+<div class="nav">
+  <ul id="nav_tabs">
+    <li><a href="/">Predictions</a></li>
+    <li class="selected">Points</li>
+  </ul>
+</div>
+{% endblock nav %}
+
+{% block content %}
+<div class="content-item">
+  <p>Choose an opponent to view his/her points:
+  <select id="idOpponents" onchange="f()">
+    {% for opponent in opponents %}
+    <option value="{{ opponent.total }}">{{ opponent.name }}</option>
+    {% endfor %}
+  </select>
+  </p>
+  <p id="idOpponentTotal"></p>
+  <p id="idOpponentLast"></p>
+</div>
+<script>
+  var oppScoreData = {};
+  {% for opponent in opponents %}
+  oppScoreData['{{ opponent.name }}'] = {{ opponent.last }};
+  {% endfor %}
+  sessionStorage.setItem('oppScoreData', JSON.stringify(oppScoreData));
+  initOpponents();
+</script>
+{% endblock content %}

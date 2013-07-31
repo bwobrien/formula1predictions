@@ -67,6 +67,12 @@ a, span {
 
 #nav_tabs li.selected {
   border-bottom: 2px solid gray;
+  cursor: default;
+}
+
+#nav_tabs a {
+  color: black;
+  text-decoration: none;
 }
 
 /* End Nav CSS */
