@@ -90,7 +90,7 @@ class MainPage(webapp2.RequestHandler):
         'points_last_race': pointsLast
     }
 
-    path = os.path.join(os.path.dirname(__file__), 'templates/overall_makepredictions.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/base_makepredictions.html')
     self.response.out.write(template.render(path, template_values))
 
 
@@ -111,7 +111,7 @@ class Points(webapp2.RequestHandler):
     template_values = {
       'opponents': opponents
     }
-    path = os.path.join(os.path.dirname(__file__), 'templates/overall_points.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/base_points.html')
     self.response.out.write(template.render(path, template_values))
 
 
