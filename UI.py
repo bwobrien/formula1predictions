@@ -104,11 +104,13 @@ class Points(webapp2.RequestHandler):
     api = F1API.API()
 
     uuid = user.user_id()
+    userRow = userDb.getUserById(uuid)
     opponents = userDb.getOpponents(uuid)
     for each in opponents:
       each['last'], each['total'] = getPoints(predictionsDb, api, each['uuid'])
 
     template_values = {
+      'user_name': userRow.display,
       'opponents': opponents
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/base_points.html')
