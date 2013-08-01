@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block header %}
+<img src="/img/F1_large.png" class="f1-logo header-left">
+<span class="header-title header-left">
+  Formula 1 Predictions
+</span>
+{% endblock header %}
+
+{% block nav %}
+{# Intentionally blank #}
+{% endblock nav %}
+
+{% block content %}
+<form action="/register/submit" method="post">
+  <div><span>Display Name:</span><input type="text" name="displayName" /></div>
+  <div><input type="submit" value="Register" /></div>
+</form>
+{% endblock content %}

@@ -1,21 +1,21 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <link rel="stylesheet" href="css/main.css" />
-    <script src="../js/jquery-1.10.1.js"></script>
-    <script src="../js/main.js"></script>
+    <link rel="stylesheet" href="/css/main.css" />
+    <script src="/js/jquery-1.10.1.js"></script>
+    <script src="/js/main.js"></script>
   </head>
   <body>
-    {% block header %}
     <div class="header">
-      <img src="img/F1_large.png" class="f1-logo header-left">
+      {% block header %}
+      <img src="/img/F1_large.png" class="f1-logo header-left">
       <span class="header-title header-left">
         Formula 1 Predictions
       </span>
       <a id="sign_out" class="header-right" href="{{logout_url}}">Sign out</a>
       <span id="identity" class="header-right">Welcome, {{ user_name }}</span>
+      {% endblock header %}
     </div>
-    {% endblock header %}
     {% block nav %}
     <div class="nav">
       <ul id="nav_tabs">

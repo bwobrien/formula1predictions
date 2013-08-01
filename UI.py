@@ -147,11 +147,8 @@ class RegisterView(webapp2.RequestHandler):
     if not user:
       self.redirect(user.create_login_url(self.request.uri))
     else:
-      self.response.out.write('''
-                <form action="/register/submit" method="post">
-                  <div><span>Display Name:</span><input type="text" name="displayName" /></div>
-                  <div><input type="submit" value="Register" /></div>
-                </form>''')
+      path = os.path.join(os.path.dirname(__file__), 'templates/base_registerview.html')
+      self.response.out.write(template.render(path, {}))
 
 class RegisterSubmit(webapp2.RequestHandler):
   def post(self):
