@@ -21,7 +21,9 @@ def getPoints(predictionsDb, api, uuid):
     qualiResult = api.getResult(i, False)
     qualiResultCode = api.getDriverCodeFromId(qualiResult)
     myRaceResult = predictionsDb.getPredictions(uuid, i, True)
+    print "My race res: ", myRaceResult
     myQualiResult = predictionsDb.getPredictions(uuid, i, False)
+    print "My quali res: ", myQualiResult
     pointsLast = float(calculatePoints(myRaceResult, raceResult, True))
     pointsLast += float(calculatePoints(myQualiResult, qualiResultCode, False))
     pointsTotal += float(pointsLast)

@@ -5,8 +5,15 @@ function initOpponents() {
   var opTotal = document.getElementById("idOpponentTotal");
   var opLast = document.getElementById("idOpponentLast");
   var oppScoreData = JSON.parse(window.sessionStorage.getItem('oppScoreData'));
-  var opLastPoints = oppScoreData[e.options[e.selectedIndex].text];
+  var opPoints = oppScoreData[strUser];
 
-  opTotal.innerHTML = 'Opponent Total Points: '+ strUser;
-  opLast.innerHTML = 'Opponent Last Race Points: ' + opLastPoints;
+  opTotal.innerHTML = 'Opponent Total Points: '+ opPoints.total;
+  opLast.innerHTML = 'Opponent Last Race Points: ' + opPoints.last;
+}
+
+function escapeHTML(html) {
+  var pre = document.createElement('pre');
+  var text = document.createTextNode(html);
+  pre.appendChild(text);
+  return pre.innerHTML;
 }

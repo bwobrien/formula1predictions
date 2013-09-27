@@ -12,9 +12,9 @@
 {% block content %}
 <div class="content-item">
   <p>Choose an opponent to view his/her points:
-  <select id="idOpponents" onchange="f()">
+  <select id="idOpponents" onchange="initOpponents()">
     {% for opponent in opponents %}
-    <option value="{{ opponent.total }}">{{ opponent.name }}</option>
+    <option value="{{ opponent.uuid }}">{{ opponent.name }}</option>
     {% endfor %}
   </select>
   </p>
@@ -24,7 +24,10 @@
 <script>
   var oppScoreData = {};
   {% for opponent in opponents %}
-  oppScoreData['{{ opponent.name }}'] = {{ opponent.last }};
+    oppScoreData['{{ opponent.uuid }}'] = {
+        'last': {{ opponent.last }},
+        'total': {{ opponent.total }}
+    }
   {% endfor %}
   sessionStorage.setItem('oppScoreData', JSON.stringify(oppScoreData));
   initOpponents();
