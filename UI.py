@@ -139,7 +139,7 @@ class PredictionsHandler(webapp2.RequestHandler):
                        'quali': quali,
                        'race': race
                        }
-    path = os.path.join(os.path.dirname(__file__), 'templates/predictions_recorded.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/base_predictionsconfirm.html')
     self.response.out.write(template.render(path, template_values))
         
 
